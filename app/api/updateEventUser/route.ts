@@ -1,4 +1,3 @@
-import { MongoDBUser } from "./../migrateDocument/_dont_route";
 import { MongoClient } from "mongodb";
 
 export async function PATCH(req: Request) {

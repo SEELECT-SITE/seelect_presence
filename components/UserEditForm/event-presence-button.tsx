@@ -6,6 +6,8 @@ import { toast } from "sonner";
 import axios from "axios";
 import { Skeleton } from "../ui/skeleton";
 import { RotateCw } from "lucide-react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { MongoDBUser } from "@/app/api/migrateDocument/_dont_route";
 
 export default function EventPresenceButton({
   title,
@@ -20,6 +22,23 @@ export default function EventPresenceButton({
 }) {
   const [daysUpdate, setDaysUpdate] = useState<boolean[]>(days);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const queryClient = useQueryClient();
+  const { mutateAsync: sendUpdateFn } = useMutation({
+    mutationFn: sendUpdate,
+    onSuccess(response) {
+      queryClient.setQueryData(["users"], (data: MongoDBUser[]) => {
+        return data.map((elem) => {
+          if (elem.id == userID) {
+            const eventToUpdate = elem.events[eventID];
+            eventToUpdate.days = daysUpdate;
+            elem.events[eventID] = eventToUpdate;
+            return { ...elem, events: [...elem.events] };
+          }
+          return elem;
+        });
+      });
+    },
+  });
   async function sendUpdate() {
     setIsLoading(true);
     try {
@@ -64,7 +83,7 @@ export default function EventPresenceButton({
             );
           })}
         </ul>
-        <Button size={"sm"} onClick={sendUpdate}>
+        <Button size={"sm"} onClick={() => sendUpdateFn()}>
           Atualizar presença{" "}
           <RotateCw
             data-loading={isLoading}
