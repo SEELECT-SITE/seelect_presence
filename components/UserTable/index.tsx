@@ -44,7 +44,9 @@ export function UserTable() {
   const { data, isLoading } = useQuery<MongoDBUser[]>({
     queryKey: ["users"],
     queryFn: async () => {
-      const { data } = await axios.get("/api/getUsers");
+      const { data } = await axios.get("/api/getUsers", {
+        headers: { token: process.env.NEXT_PUBLIC_CRYPTO_KEY },
+      });
       return data;
     },
   });
@@ -166,7 +168,7 @@ export function UserTable() {
                       colSpan={productTableColumnsDef.length + 1}
                       className="h-16 text-center"
                     >
-                      Sem produtos
+                      Sem usuarios
                     </TableCell>
                   </TableRow>
                 )}

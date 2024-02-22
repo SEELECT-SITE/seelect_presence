@@ -13,15 +13,14 @@ export type MongoDBUser = {
   name: string;
   email: string;
   cpf?: string;
-  pers_key?: string;
   events: { title: string; days: boolean[] }[];
 };
-export async function GET() {
+export async function GET(req: Request) {
   try {
     const client = await MongoClient.connect(
       process.env.NEXT_PUBLIC_MONGO_URI!
     );
-    const db = client.db("test");
+    const db = client.db("seelect_main");
 
     // Fetch users data from external API
     const { data: usersRequest } = await axios.get<{ results: any[] }>(
@@ -32,17 +31,16 @@ export async function GET() {
     );
 
     // Process each user to fetch additional data
-    console.log("checkpoint1");
     const users: MongoDBUser[] = [];
     for (const elem of usersRequest.results) {
       const { data } = await axios.get<{
         profile: {
+          cpf: string;
           kit: {
             events: {
               id: number;
               date: any;
               title: string;
-              cpf: string;
             }[];
           };
         };
@@ -62,7 +60,7 @@ export async function GET() {
                 return diffInMinutes(new Date(elem.start), new Date(elem.end));
               }
             );
-            return { title: event.title, days };
+            return { title: event.title, days, hours_per_day };
           })
         : [];
       if (events.length > 0) {
@@ -71,14 +69,12 @@ export async function GET() {
           name: `${elem.profile.first_name} ${elem.profile.last_name}`,
           email: elem.email,
           events,
-          pers_key: encryptSensitive(elem.cpf),
+          cpf: elem.profile.cpf,
         });
       }
     }
-    console.log("checkpoint2");
 
     await db.collection("users").insertMany(users);
-    console.log("checkpoint3");
 
     await client.close();
     // Insert each element of the array into the MongoDB collection

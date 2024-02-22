@@ -13,6 +13,9 @@
 /.next/
 /out/
 
+#personal_routes
+/app/api/migrateDocument
+
 # production
 /build
 
