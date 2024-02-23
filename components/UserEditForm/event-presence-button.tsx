@@ -58,7 +58,7 @@ export default function EventPresenceButton({
   return (
     <li
       key={title}
-      className="flex items-center justify-between border border-zinc-200 p-1.5 rounded-lg mb-2"
+      className="flex items-center justify-between border border-zinc-200 dark:border-zinc-800 hover:shadow-sm duration-200 p-1.5 rounded-lg mb-2"
     >
       <p className="font-bold max-w-[50%]">{title.split("$")[0]}</p>
       <div

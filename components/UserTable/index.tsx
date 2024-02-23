@@ -36,6 +36,7 @@ import { ChevronDown } from "lucide-react";
 import { MongoDBUser } from "@/app/api/migrateDocument/_dont_route";
 import { Skeleton } from "../ui/skeleton";
 import useUserPageState from "../UserEditForm/users.store";
+import { ModeToggle } from "../ui/mode-toggle";
 
 export function UserTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -85,6 +86,7 @@ export function UserTable() {
           className="max-w-sm"
         />
         <div className="flex gap-3">
+          <ModeToggle />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="ml-auto">
