@@ -20,7 +20,7 @@ export async function PATCH(req: Request) {
     const client = await MongoClient.connect(
       process.env.NEXT_PUBLIC_MONGO_URI!
     );
-    const db = client.db("test");
+    const db = client.db("seelect_main");
 
     // Update the values in the array
     const user = await db

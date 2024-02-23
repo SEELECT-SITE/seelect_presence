@@ -1,14 +1,8 @@
-// pages/api/createDocuments.ts
-
 import { MongoClient } from "mongodb";
 import axios from "axios";
 import { diffInMinutes } from "@/lib/utils";
 import { encryptSensitive } from "@/app/actions";
-/* 
-export async function GET(res: Request) {
-  return Response.json({ message: "hello" });
-}
- */
+
 export type MongoDBUser = {
   id: number;
   name: string;
