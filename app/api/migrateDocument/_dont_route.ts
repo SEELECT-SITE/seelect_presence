@@ -2,7 +2,8 @@
 
 import { MongoClient } from "mongodb";
 import axios from "axios";
-import { diffInMinutes, encryptSensitive } from "@/lib/utils";
+import { diffInMinutes } from "@/lib/utils";
+import { encryptSensitive } from "@/app/actions";
 /* 
 export async function GET(res: Request) {
   return Response.json({ message: "hello" });
@@ -12,7 +13,7 @@ export type MongoDBUser = {
   id: number;
   name: string;
   email: string;
-  cpf?: string;
+  pers_key?: string;
   events: { title: string; days: boolean[] }[];
 };
 export async function GET(req: Request) {
@@ -64,12 +65,13 @@ export async function GET(req: Request) {
           })
         : [];
       if (events.length > 0) {
+        const response = await encryptSensitive(elem.profile.cpf);
         users.push({
           id: elem.id,
           name: `${elem.profile.first_name} ${elem.profile.last_name}`,
           email: elem.email,
           events,
-          cpf: elem.profile.cpf,
+          pers_key: response,
         });
       }
     }
