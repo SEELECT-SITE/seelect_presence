@@ -1,8 +1,8 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "../ui/checkbox";
-import { MongoDBUser } from "@/types";
+import { EventProps } from "@/types";
 
-export const productTableColumnsDef: ColumnDef<MongoDBUser, any>[] = [
+export const eventsTableColumnsDef: ColumnDef<EventProps, any>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -26,15 +26,12 @@ export const productTableColumnsDef: ColumnDef<MongoDBUser, any>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "name",
-    header: "Nome",
-    cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
-  },
-  {
-    accessorKey: "email",
-    header: "Email",
-    cell: ({ row }) => {
-      return <div>{row.getValue("email")}</div>;
-    },
+    accessorKey: "title",
+    header: "Evento",
+    cell: ({ row }) => (
+      <div className="capitalize">
+        {(row.getValue("title") as string).split("$")[0]}
+      </div>
+    ),
   },
 ];

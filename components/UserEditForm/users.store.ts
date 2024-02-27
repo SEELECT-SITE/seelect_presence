@@ -1,4 +1,4 @@
-import { MongoDBUser } from "@/app/api/migrateDocument/_dont_route";
+import { MongoDBUser } from "@/types";
 import { create } from "zustand";
 
 type UsersPage = {

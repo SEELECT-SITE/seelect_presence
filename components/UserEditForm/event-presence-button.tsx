@@ -7,7 +7,7 @@ import axios from "axios";
 import { Skeleton } from "../ui/skeleton";
 import { RotateCw } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { MongoDBUser } from "@/app/api/migrateDocument/_dont_route";
+import { MongoDBUser } from "@/types";
 
 export default function EventPresenceButton({
   title,

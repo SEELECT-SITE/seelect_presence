@@ -24,7 +24,7 @@ import { Button } from "../ui/button";
 import axios from "axios";
 import { toast } from "sonner";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { MongoDBUser } from "@/app/api/migrateDocument/_dont_route";
+import { MongoDBUser } from "@/types";
 
 const insertEventSchema = z.object({
   title: z.string().min(1, "Nome de usuario é obrigatório"),
@@ -135,16 +135,19 @@ export default function ProductEditForm() {
         </Accordion>
 
         <ul className="px-1">
-          {toEditUser?.events.map((elem, index) => {
-            return (
-              <EventPresenceButton
-                key={elem.title}
-                {...elem}
-                eventID={index}
-                userID={toEditUser.id}
-              />
-            );
-          })}
+          {
+            //@ts-ignore
+            toEditUser?.events.map((elem, index) => {
+              return (
+                <EventPresenceButton
+                  key={elem.title}
+                  {...elem}
+                  eventID={index}
+                  userID={toEditUser.id}
+                />
+              );
+            })
+          }
         </ul>
       </div>
     </ScrollArea>

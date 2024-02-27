@@ -13,8 +13,13 @@
 /.next/
 /out/
 
+#unused_files
+/public/pdf
+
 #personal_routes
-/app/api/migrateDocument
+/app/api/migrateUsers
+/app/api/migrateEvents
+/app/api/sendEmail
 
 # production
 /build

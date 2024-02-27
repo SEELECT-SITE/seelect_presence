@@ -27,26 +27,26 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { productTableColumnsDef } from "./user-table-config";
+import { eventsTableColumnsDef } from "./events-table-config";
 import axios from "axios";
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronDown } from "lucide-react";
-import { MongoDBUser } from "@/types";
 import { Skeleton } from "../ui/skeleton";
-import useUserPageState from "../UserEditForm/users.store";
+import useEventPageState from "../EventEditForm/event.store";
 import { ModeToggle } from "../ui/mode-toggle";
+import { EventProps } from "@/types";
 
-export function UserTable() {
+function EventsTable_() {
   const [sorting, setSorting] = useState<SortingState>([]);
-  const { setIsUserFormOpen, setToEditUser } = useUserPageState();
+  const { setIsEventFormOpen, setToEditEvent } = useEventPageState();
 
-  const { data, isLoading } = useQuery<MongoDBUser[]>({
-    queryKey: ["users"],
+  const { data, isLoading } = useQuery<EventProps[]>({
+    queryKey: ["events"],
     queryFn: async () => {
-      const { data } = await axios.get("/api/getUsers", {
-        headers: { token: process.env.NEXT_PUBLIC_CRYPTO_KEY },
+      const { data } = await axios.get("/api/getEvents", {
+        headers: { token: process.env.CRYPTO_KEY },
       });
       return data;
     },
@@ -57,7 +57,7 @@ export function UserTable() {
   const [rowSelection, setRowSelection] = useState({});
   const table = useReactTable({
     data: data ?? [],
-    columns: productTableColumnsDef,
+    columns: eventsTableColumnsDef,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -79,9 +79,9 @@ export function UserTable() {
       <div className="flex items-center justify-between py-4 gap-1">
         <Input
           placeholder="Procure por nome..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
+            table.getColumn("title")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
@@ -133,7 +133,7 @@ export function UserTable() {
                     </TableHead>
                   );
                 })}
-                <TableHead> Eventos</TableHead>
+                <TableHead> Presenças</TableHead>
               </TableRow>
             ))}
           </TableHeader>
@@ -141,7 +141,7 @@ export function UserTable() {
             {data && table.getRowModel().rows?.length
               ? table.getRowModel().rows.map((row, index) => (
                   <TableRow
-                    key={row.original.id ?? index}
+                    key={row.original.title ?? index}
                     data-state={row.getIsSelected() && "selected"}
                   >
                     {row.getVisibleCells().map((cell) => (
@@ -155,11 +155,11 @@ export function UserTable() {
                     <TableCell>
                       <Button
                         onClick={() => {
-                          setIsUserFormOpen(true);
-                          setToEditUser(row.original);
+                          setIsEventFormOpen(true);
+                          setToEditEvent(row.original);
                         }}
                       >
-                        Ver Eventos
+                        Ver Presenças
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -167,7 +167,7 @@ export function UserTable() {
               : !isLoading && (
                   <TableRow>
                     <TableCell
-                      colSpan={productTableColumnsDef.length + 1}
+                      colSpan={eventsTableColumnsDef.length + 1}
                       className="h-16 text-center"
                     >
                       Sem usuarios
@@ -178,7 +178,7 @@ export function UserTable() {
               Array.from({ length: 8 }).map((_, index) => (
                 <TableRow key={index}>
                   <TableCell
-                    colSpan={productTableColumnsDef.length + 1}
+                    colSpan={eventsTableColumnsDef.length + 1}
                     className="text-center"
                     key={index}
                   >
@@ -218,8 +218,8 @@ export function UserTable() {
 
 // This is a workaround to avoid rendering the table on the server
 
-export default function UsersTable() {
+export default function EventsTable() {
   const isClient = useIsClient();
   if (!isClient) return null;
-  return <UserTable />;
+  return <EventsTable_ />;
 }
