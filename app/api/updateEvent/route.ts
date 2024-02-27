@@ -1,5 +1,4 @@
-import { MongoDBUser } from "../migrateUsers/route";
-import { EventProps } from "@/types";
+import { EventProps, MongoDBUser } from "@/types";
 import { MongoClient } from "mongodb";
 
 export async function PATCH(req: Request) {
