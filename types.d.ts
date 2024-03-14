@@ -5,7 +5,7 @@ export type MongoDBUser = {
   name: string;
   email: string;
   pers_key?: string;
-  events: { title: string; days: boolean[]; hours_per_day?: number[] }[];
+  events: { title: string; days: boolean[]; hours_per_day: number[] }[];
 };
 export type EventProps = {
   title: string;

@@ -2,7 +2,7 @@ import { MongoClient } from "mongodb";
 
 export async function GET(req: Request) {
   const token = req.headers.get("token");
-  if (token != process.env.NEXT_PUBLIC_CRYPTO_KEY) {
+  if (token != process.env.CRYPTO_KEY) {
     return new Response("Internal server error", {
       status: 500,
     });

@@ -19,7 +19,6 @@
 #personal_routes
 /app/api/migrateUsers
 /app/api/migrateEvents
-/app/api/sendEmail
 
 # production
 /build
